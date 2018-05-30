@@ -1,0 +1,20 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    httpparty (0.0.7)
+    mini_portile2 (2.3.0)
+    nokogiri (1.8.2)
+      mini_portile2 (~> 2.3.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  httpparty
+  nokogiri
+
+RUBY VERSION
+   ruby 2.4.1p111
+
+BUNDLED WITH
+   1.16.2
