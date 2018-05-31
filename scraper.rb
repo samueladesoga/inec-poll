@@ -29,7 +29,7 @@ class Scraper
 
 	def get_polling_unit(state_id, lga_id, ward_id)
 		resp = post_to_url(INEC_BASE_URL, :body => {:sel_states => state_id, :sel_lgas => lga_id, :sel_ra => ward_id, :MM_insert => 'form1'})
-		Nokogiri::HTML(resp.parsed_response).css("td strong").map{|pu|pu.text}
+		Nokogiri::HTML(resp.parsed_response).css("td a").map{|pu|pu.text}
 	end
 
 	def post_to_url(url=LAGASS_URL, body)
@@ -38,11 +38,21 @@ class Scraper
 
 	def main
 		parse_states.each { |value, state_name|
-			get_lgas(value.to_i).each { |lg_v, lg_name|
-				get_ward(lg_v.to_i).each { |w_v, w_name|
-					puts get_polling_unit(value.to_i, lg_v.to_i, w_v.to_i)
+			if value.to_i > 0
+				get_lgas(value.to_i).each { |lg_v, lg_name|
+					if lg_v.to_i > 0
+						get_ward(lg_v.to_i).each { |w_v, w_name|
+							if w_v.to_i > 0
+								pus = get_polling_unit(value.to_i, lg_v.to_i, w_v.to_i)
+								pus.each { |pu|
+									puts "******#{state_name}, #{lg_name}, #{w_name}, #{pu}*******"
+								}
+								
+							end
+						}
+					end
 				}
-			}
+			end
 		}
 	end
 end
